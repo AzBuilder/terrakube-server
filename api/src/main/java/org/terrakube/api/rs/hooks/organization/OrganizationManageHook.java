@@ -6,6 +6,7 @@ import com.yahoo.elide.core.security.ChangeSpec;
 import com.yahoo.elide.core.security.RequestScope;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.terrakube.api.plugin.manage.OrganizationManageService;
 import org.terrakube.api.plugin.softdelete.SoftDeleteService;
 import org.terrakube.api.rs.Organization;
@@ -24,7 +25,7 @@ public class OrganizationManageHook implements LifeCycleHook<Organization> {
         log.info("OrganizationManageHook {}", organization.getId());
             switch (operation) {
                 case CREATE:
-                    organizationManageService.postCreationSetup(organization);
+                    organizationManageService.postCreationQuartzJob(organization);
                     break;
                 case UPDATE:
                     if(organization.isDisabled()){
