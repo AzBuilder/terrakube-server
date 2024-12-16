@@ -25,7 +25,8 @@ public class OrganizationManageHook implements LifeCycleHook<Organization> {
         log.info("OrganizationManageHook {}", organization.getId());
             switch (operation) {
                 case CREATE:
-                    organizationManageService.postCreationQuartzJob(organization);
+                    if(transactionPhase.equals(LifeCycleHookBinding.TransactionPhase.POSTCOMMIT))
+                        organizationManageService.postCreationQuartzJob(organization);
                     break;
                 case UPDATE:
                     if(organization.isDisabled()){

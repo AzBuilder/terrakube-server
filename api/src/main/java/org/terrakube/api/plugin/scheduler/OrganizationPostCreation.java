@@ -2,6 +2,7 @@ package org.terrakube.api.plugin.scheduler;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.transaction.annotation.Transactional;
 import org.terrakube.api.plugin.manage.OrganizationManageService;
 import org.terrakube.api.repository.OrganizationRepository;
 import org.terrakube.api.rs.Organization;
@@ -20,6 +21,7 @@ public class OrganizationPostCreation implements org.quartz.Job {
         this.organizationManageService = organizationManageService;
     }
 
+    @Transactional
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         String organizationId = jobExecutionContext.getJobDetail().getJobDataMap().getString("organizationId");
