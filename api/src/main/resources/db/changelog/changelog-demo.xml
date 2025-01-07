@@ -14,4 +14,5 @@
     <include file="/db/changelog/demo-data/simple.xml"/>
     <include file="/db/changelog/demo-data/simple-tag.xml"/>
     <include file="/db/changelog/demo-data/demo-tofu-refactor.xml"/>
+    <include file="/db/changelog/demo-data/limited-access.xml"/>
 </databaseChangeLog>

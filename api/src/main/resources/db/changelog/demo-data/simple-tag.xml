@@ -32,7 +32,7 @@
         </insert>
 
         <!--
-        ***************    
+        ***************
         ***WORKSPACE***
         ***************
         -->
@@ -46,11 +46,11 @@
             <column name="organization_id"   value="d9b58bd3-f3fc-4056-a026-1163297e80a8" />
         </insert>
 
-       <!--
-       ********************
-       ***WORKSPACE TAGS***
-       ********************
-       -->
+        <!--
+        ********************
+        ***WORKSPACE TAGS***
+        ********************
+        -->
         <insert tableName="workspacetag">
             <column name="id"               value="e982f999-f68f-4635-a44a-e8b32c122ae8" />
             <column name="tag_id"           value="58529721-425e-44d7-8b0d-1d515043c2f7" />

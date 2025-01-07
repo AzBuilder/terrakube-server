@@ -61,14 +61,14 @@ public class TerraformStateController {
     }
 
     @GetMapping(value = "/organization/{organizationId}/workspace/{workspaceId}/state/{stateFilename}.json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("@stateService.hasManageStatePermission(authentication, #organizationId)")
+    @PreAuthorize("@stateService.hasManageStatePermission(authentication, #organizationId, #workspaceId)")
     public @ResponseBody byte[] getTerraformStateJson(@PathVariable("organizationId") String organizationId,
             @PathVariable("workspaceId") String workspaceId, @PathVariable("stateFilename") String stateFilename) {
         return storageTypeService.getTerraformStateJson(organizationId, workspaceId, stateFilename);
     }
 
     @GetMapping(value = "/organization/{organizationId}/workspace/{workspaceId}/state/terraform.tfstate", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("@stateService.hasManageStatePermission(authentication, #organizationId)")
+    @PreAuthorize("@stateService.hasManageStatePermission(authentication, #organizationId, #workspaceId)")
     public @ResponseBody byte[] getCurrentTerraformState(@PathVariable("organizationId") String organizationId,
             @PathVariable("workspaceId") String workspaceId) {
         return storageTypeService.getCurrentTerraformState(organizationId, workspaceId);
@@ -119,7 +119,7 @@ public class TerraformStateController {
     }
 
     @PutMapping(value = "/organization/{organizationId}/workspace/{workspaceId}/rollback/{stateFilename}.json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("@stateService.hasManageStatePermission(authentication, #organizationId)")
+    @PreAuthorize("@stateService.hasManageStatePermission(authentication, #organizationId, #workspaceId)")
     public ResponseEntity<String> rollbackToState(
             @PathVariable("organizationId") String organizationId,
             @PathVariable("workspaceId") String workspaceId,

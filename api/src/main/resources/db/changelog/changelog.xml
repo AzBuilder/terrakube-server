@@ -69,4 +69,5 @@
     <include file="/db/changelog/local/changelog-2.24.0-collection-data.xml"/>
     <include file="/db/changelog/local/changelog-2.24.0-collection-data-constraints.xml"/>
     <include file="/db/changelog/local/changelog-2.24.0-manage-job.xml"/>
+    <include file="/db/changelog/local/changelog-2.24.0-workspace-access.xml"/>
 </databaseChangeLog>

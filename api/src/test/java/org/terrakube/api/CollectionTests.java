@@ -1,7 +1,9 @@
 package org.terrakube.api;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.Mockito.when;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -28,14 +31,11 @@ public class CollectionTests extends ServerApplicationTests {
 
     private static final String EXECUTOR_ENDPOINT="http://localhost:9999/fake/executor";
 
-    @Autowired
-    TeamRepository teamRepository;
-
-    @Autowired
-    ExecutorService executorService;
-
-    @Autowired
-    AgentRepository agentRepository;
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+    }
 
     @Test
     void createCollectionAsOrgMember() {

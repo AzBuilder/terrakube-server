@@ -16,6 +16,7 @@ import org.terrakube.api.rs.job.Job;
 import org.terrakube.api.rs.ssh.Ssh;
 import org.terrakube.api.rs.vcs.Vcs;
 import org.terrakube.api.rs.webhook.Webhook;
+import org.terrakube.api.rs.workspace.access.Access;
 import org.terrakube.api.rs.workspace.content.Content;
 import org.terrakube.api.rs.workspace.history.History;
 import org.terrakube.api.rs.workspace.parameters.Variable;
@@ -43,9 +44,9 @@ import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@ReadPermission(expression = "team view workspace")
+@ReadPermission(expression = "team view workspace OR team limited view workspace")
 @CreatePermission(expression = "team manage workspace")
-@UpdatePermission(expression = "team manage workspace")
+@UpdatePermission(expression = "team manage workspace OR team limited manage workspace")
 @DeletePermission(expression = "team manage workspace")
 @LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.UPDATE, phase = LifeCycleHookBinding.TransactionPhase.PRECOMMIT, hook = WorkspaceManageHook.class)
 @LifeCycleHookBinding(operation = LifeCycleHookBinding.Operation.CREATE, phase = LifeCycleHookBinding.TransactionPhase.PRECOMMIT, hook = WorkspaceManageHook.class)
@@ -115,7 +116,7 @@ public class Workspace extends GenericAuditFields {
     private List<Schedule> schedule;
 
     @OneToMany(mappedBy = "workspace")
-    @UpdatePermission(expression = "team view workspace")
+    @UpdatePermission(expression = "team view workspace OR team limited view workspace")
     private List<Job> job;
 
     @Exclude
@@ -139,4 +140,8 @@ public class Workspace extends GenericAuditFields {
 
     @OneToMany(mappedBy = "workspace", fetch = FetchType.LAZY)
     private List<Reference> reference;
+
+    @OneToMany(mappedBy = "workspace")
+    @UpdatePermission(expression = "user is a superuser")
+    private List<Access> access;
 }

@@ -43,7 +43,9 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>org/terrakube/api/**/*Tests.*</exclude>
+                        <exclude>**/*Tests.*</exclude>
+                        <exclude>**/*Test.class</exclude>
+                        <exclude>**/*Tests.class</exclude>
                         <exclude>org/terrakube/api/plugin/security/audit/local/*</exclude>
                         <exclude>org/terrakube/api/plugin/security/authentication/local/*</exclude>
                         <exclude>org/terrakube/api/plugin/security/groups/local/*</exclude>

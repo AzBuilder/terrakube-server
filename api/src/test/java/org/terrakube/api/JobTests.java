@@ -1,7 +1,9 @@
 package org.terrakube.api;
 
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
 import org.springframework.http.HttpMethod;
@@ -16,13 +18,17 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.Mockito.when;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 class JobTests extends ServerApplicationTests {
 
-    @Autowired
-    TeamRepository teamRepository;
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+    }
 
     @Test
     void createJobAsOrgMember() {

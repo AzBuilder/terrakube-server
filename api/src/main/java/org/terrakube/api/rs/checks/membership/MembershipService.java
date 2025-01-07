@@ -7,6 +7,7 @@ import org.terrakube.api.plugin.security.user.AuthenticatedUser;
 import org.terrakube.api.rs.team.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.terrakube.api.rs.workspace.access.Access;
 
 import java.util.List;
 
@@ -30,9 +31,29 @@ public class MembershipService {
                 }
             } else {
                 String userName = authenticatedUser.getEmail(user);
-                if (groupService.isMember(user, team.getName()))
+                if (groupService.isMember(user, team.getName())) {
                     log.debug("user {} is member of {}", userName, team.getName());
-                return true;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkLimitedMembership(User user, List<Access> teamList) {
+        for (Access team : teamList) {
+            if (authenticatedUser.isServiceAccount(user)) {
+                String applicationServiceName = authenticatedUser.getApplication(user);
+                if (groupService.isServiceMember(user, team.getName())) {
+                    log.debug("application service {} is member of {}", applicationServiceName, team.getName());
+                    return true;
+                }
+            } else {
+                String userMail = authenticatedUser.getEmail(user);
+                if (groupService.isMember(user, team.getName())) {
+                    log.debug("user {} is limited member of {}", userMail, team.getName());
+                    return true;
+                }
             }
         }
         return false;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet author="demo-data" id="demo-4">
+        <insert tableName="access">
+            <column name="id"               value="e33fb414-b659-4950-a00e-e69b3f774f8c" />
+            <column name="name"             value="LIMITED_ACCESS" />
+            <column name="manage_workspace" value="true" />
+            <column name="manage_job"       value="true" />
+            <column name="manage_state"     value="true" />
+            <column name="workspace_id"     value="5ed411ca-7ab8-4d2f-b591-02d0d5788afc" />
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

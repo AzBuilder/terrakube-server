@@ -8,6 +8,11 @@ import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.terrakube.api.plugin.scheduler.job.tcl.executor.ExecutorService;
 import org.mockserver.integration.ClientAndServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +30,18 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static org.mockito.Mockito.when;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
 class ServerApplicationTests {
+
+    @MockBean
+    protected RedisTemplate<String, Object> redisTemplate;
+
+    @Mock
+    protected ValueOperations<String, Object> valueOperations;
 
     ClientAndServer mockServer;
 
@@ -49,6 +62,15 @@ class ServerApplicationTests {
 
     @Autowired
     TemplateRepository templateRepository;
+
+    @Autowired
+    ExecutorService executorService;
+
+    @Autowired
+    AgentRepository agentRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Value("${org.terrakube.token.pat}")
     private String base64Key;

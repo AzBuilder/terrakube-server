@@ -12,4 +12,5 @@ public interface WorkspaceRepository extends JpaRepository<Workspace, UUID> {
     Workspace getByOrganizationNameAndName(String organizationName, String workspaceName);
 
     Optional<List<Workspace>> findWorkspacesByOrganizationNameAndNameStartingWith(String organizationName, String workspaceNameStartingWidth);
+
 }

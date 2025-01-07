@@ -1,7 +1,9 @@
 package org.terrakube.api;
 
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
 import org.springframework.http.HttpStatus;
@@ -11,11 +13,15 @@ import org.terrakube.api.rs.team.Team;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.Mockito.when;
 
 class TfcApiTests extends ServerApplicationTests {
 
-    @Autowired
-    TeamRepository teamRepository;
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+    }
 
     @Test
     void ping() {

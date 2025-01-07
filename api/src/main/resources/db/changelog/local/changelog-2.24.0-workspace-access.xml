@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="2-24-0-4" author="alfespa17@gmail.com">
+        <createTable tableName="access">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manage_workspace" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manage_state" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manage_job" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="workspace_id" type="varchar(36)">
+                <constraints nullable="false" foreignKeyName="fk_workspace_access" references="workspace(id)"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint
+                columnNames="workspace_id, name"
+                constraintName="const_workspace_access"
+                deferrable="true"
+                disabled="true"
+                initiallyDeferred="true"
+                tableName="access"
+                validate="true"/>
+    </changeSet>
+</databaseChangeLog>

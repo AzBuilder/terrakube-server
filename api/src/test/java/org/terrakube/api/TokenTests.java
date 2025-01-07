@@ -1,9 +1,12 @@
 package org.terrakube.api;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
 import java.util.Base64;
@@ -11,8 +14,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.Mockito.when;
 
 class TokenTests extends ServerApplicationTests {
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+    }
 
     @Test
     void createToken() throws JsonProcessingException {

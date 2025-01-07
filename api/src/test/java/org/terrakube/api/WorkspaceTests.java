@@ -2,10 +2,10 @@ package org.terrakube.api;
 
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
-import org.terrakube.api.repository.TeamRepository;
 import org.terrakube.api.rs.team.Team;
 
 import java.io.File;
@@ -15,11 +15,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.Mockito.when;
 
 class WorkspaceTests extends ServerApplicationTests {
 
-    @Autowired
-    TeamRepository teamRepository;
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+    }
 
     @Test
     void searchWorkspaceAsOrgMember() {
@@ -306,7 +310,7 @@ class WorkspaceTests extends ServerApplicationTests {
 
     @Test
     void createWorkspaceAsOrgMember() {
-        given()
+        String workspaceId = given()
                 .headers("Authorization", "Bearer " + generatePAT("TERRAKUBE_DEVELOPERS"), "Content-Type", "application/vnd.api+json")
                 .body("{\n" +
                         "  \"data\": {\n" +
@@ -326,7 +330,18 @@ class WorkspaceTests extends ServerApplicationTests {
                 .body("data.attributes.name", IsEqual.equalTo("TestWorkspace"))
                 .log()
                 .all()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.CREATED.value()).extract().path("data.id");
+
+        // Delete the test workspace
+        given()
+                .headers("Authorization", "Bearer " + generatePAT("TERRAKUBE_DEVELOPERS"))
+                .when()
+                .delete("/api/v1/organization/d9b58bd3-f3fc-4056-a026-1163297e80a8/workspace/"+workspaceId)
+                .then()
+                .assertThat()
+                .log()
+                .all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
